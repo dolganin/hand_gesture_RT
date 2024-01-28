@@ -4,6 +4,8 @@
 ## Окружение
 Для начала склонируйте проект и настройте окружение
 ```bash
+git clone https://github.com/Dragon181/SHIFT-intensive.git
+cd SHIFT-intensive
 python3 -m venv venv
 source venv/bin/activate
 pip3 install --upgrade pip
@@ -25,4 +27,3 @@ python3 train.py
 ## Полезные ссылки
 - Туториалы по обучению на Pytorch - https://pytorch.org/tutorials/
 - Документация hydra - https://hydra.cc/docs/intro/
-- 
