@@ -54,7 +54,7 @@ def main(config):
             batch_size = data.shape[0]
             total_loss += loss.item() * batch_size
             for i, metric in enumerate(metrics):
-                total_metrics[i] += metric(output, target) * batch_size
+                total_metrics[i] += metric(output.cpu(), target.cpu()) * batch_size
 
     n_samples = len(data_loader.sampler)
     log = {'loss': total_loss / n_samples}

@@ -9,7 +9,7 @@ metrics:
 
 defaults:
   - _self_
-  - hparams: lenet_baseline
+  - hparams: linear_baseline
   - data: sign_test
   - status: evaluate
   - hydra/run/dir: job_timestamp
