@@ -102,7 +102,7 @@ class Trainer(BaseTrainer):
                 self.writer.add_image('valid/input', make_grid(data.cpu(), nrow=8, normalize=True))
                 self.valid_metrics.update('loss', loss.item())
                 for met in self.metric_ftns:
-                    self.valid_metrics.update(met.__name__, met(output, target))
+                    self.valid_metrics.update(met.__name__, met(output.cpu(), target.cpu()))
 
         # add histogram of model parameters to the tensorboard
         for name, p in self.model.named_parameters():

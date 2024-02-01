@@ -59,7 +59,7 @@ def main(config):
     if config.gpu:
         config['n_gpu'] = n_gpu
     else:
-        config['n_gpu'] = None
+        config['n_gpu'] = 0
 
     working_dir = str(Path.cwd().relative_to(hydra.utils.get_original_cwd()))
     if config.resume is not None:
