@@ -1,8 +1,8 @@
 # @package _global_
 data_loader:
   _target_: srcs.data_loader.data_loaders.get_sign_dataloader
-  csv_path_train: data/archive/sign_mnist_train/sign_mnist_train.csv
-  csv_path_val: data/archive/sign_mnist_test/sign_mnist_test.csv
+  csv_path_train: data/train.csv
+  csv_path_val: data/val.csv
   batch_size: ${batch_size}
   shuffle: true
   num_workers: ${n_cpu}
