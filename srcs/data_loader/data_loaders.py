@@ -1,27 +1,36 @@
-import pandas as pd
+from pathlib import Path
+from typing import List
+
+import cv2
+import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
 
 
 class SignDataset(Dataset):
-    def __init__(self, csv_file, transform=None):
-        self.data = pd.read_csv(csv_file)
+    def __init__(self, paths: List[str], transform=None):
+        self.paths = paths
         self.transform = transform # если есть аугментации
 
+        labels = {x.split('/')[-2] for x in paths}
+        self.one_hot_encoding = {label: i for i, label in enumerate(labels)}
+
     def __len__(self):
-        return len(self.data)
+        return len(self.paths)
 
     def __getitem__(self, idx):
-        image = self.data.iloc[idx, 1:].to_numpy().reshape(1, 28, 28)
-        label = self.data.iloc[idx]['label']
+        image = cv2.imread(self.paths[idx])
+        label = self.paths[idx].split('/')[-2]
+        label_vector = np.zeros((len(self.one_hot_encoding)))
+        label_vector[self.one_hot_encoding[label]] = 1.0
         return torch.tensor(image).float(), torch.tensor(label)
 
 
 def get_sign_dataloader(
-        csv_path_train, csv_path_val, batch_size, shuffle=True, num_workers=1,
+        path_train, path_val, batch_size, shuffle=True, num_workers=1,
     ):
-    train_dataset = SignDataset(csv_file=csv_path_train)
-    val_dataset = SignDataset(csv_file=csv_path_val)
+    train_dataset = SignDataset(paths=[*Path(path_train).rglob('*.jpg')])
+    val_dataset = SignDataset(paths=[*Path(path_val).rglob('*.jpg')])
 
     loader_args = {
         'batch_size': batch_size,
@@ -32,9 +41,9 @@ def get_sign_dataloader(
 
 
 def get_sign_test_dataloader(
-        csv_path_test, batch_size, num_workers=1,
+        path_test, batch_size, num_workers=1,
     ):
-    test_dataset = SignDataset(csv_file=csv_path_test)
+    test_dataset = SignDataset(paths=[*Path(path_test).rglob('*.jpg')])
 
     loader_args = {
         'batch_size': batch_size,
