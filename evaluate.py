@@ -50,11 +50,13 @@ def main(config):
             #
 
             # computing loss, metrics on test set
+            metric_output = output.argmax(dim=1)
+            metric_target = target.argmax(dim=1)
             loss = criterion(output, target)
             batch_size = data.shape[0]
             total_loss += loss.item() * batch_size
             for i, metric in enumerate(metrics):
-                total_metrics[i] += metric(output.cpu(), target.cpu()) * batch_size
+                total_metrics[i] += metric(metric_output.cpu(), metric_target.cpu()) * batch_size
 
     n_samples = len(data_loader.sampler)
     log = {'loss': total_loss / n_samples}
