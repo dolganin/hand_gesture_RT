@@ -77,11 +77,11 @@ class Trainer(BaseTrainer):
             self.lr_scheduler.step()
 
         # add result metrics on entire epoch to tensorboard
-        self.writer.set_step(epoch)
-        if epoch == 1 and is_master():
-            self.writer.add_graph(self.model, data)
-        for k, v in log.items():
-            self.writer.add_scalar(k + '/epoch', v)
+        # self.writer.set_step(epoch)
+        # if epoch == 1 and is_master():
+        #     self.writer.add_graph(self.model, data)
+        # for k, v in log.items():
+        #     self.writer.add_scalar(k + '/epoch', v)
         return log
 
     def _valid_epoch(self, epoch):
@@ -104,11 +104,13 @@ class Trainer(BaseTrainer):
                 self.writer.add_image('valid/input', make_grid(data.cpu(), nrow=8, normalize=True))
                 self.valid_metrics.update('loss', loss.item())
                 for met in self.metric_ftns:
-                    self.valid_metrics.update(met.__name__, met(output.cpu(), target.cpu()))
+                    metric_output = output.argmax(dim=1)
+                    metric_target = target.argmax(dim=1)
+                    self.valid_metrics.update(met.__name__, met(metric_output.cpu(), metric_target.cpu()))
 
         # add histogram of model parameters to the tensorboard
-        for name, p in self.model.named_parameters():
-            self.writer.add_histogram(name, p, bins='auto')
+        # for name, p in self.model.named_parameters():
+        #     self.writer.add_histogram(name, p, bins='auto')
         return self.valid_metrics.result()
 
     def _progress(self, batch_idx):
