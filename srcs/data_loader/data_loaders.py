@@ -12,18 +12,19 @@ class SignDataset(Dataset):
         self.paths = paths
         self.transform = transform # если есть аугментации
 
-        labels = {x.split('/')[-2] for x in paths}
+        labels = {str(x).split('/')[-2] for x in paths}
         self.one_hot_encoding = {label: i for i, label in enumerate(labels)}
 
     def __len__(self):
         return len(self.paths)
 
     def __getitem__(self, idx):
-        image = cv2.imread(self.paths[idx])
-        label = self.paths[idx].split('/')[-2]
+        image = cv2.imread(str(self.paths[idx]))
+        label = str(self.paths[idx]).split('/')[-2]
         label_vector = np.zeros((len(self.one_hot_encoding)))
         label_vector[self.one_hot_encoding[label]] = 1.0
-        return torch.tensor(image).float(), torch.tensor(label)
+        image = np.transpose(image, (2, 0, 1))
+        return torch.tensor(image).float(), torch.tensor(label_vector)
 
 
 def get_sign_dataloader(
