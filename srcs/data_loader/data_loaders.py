@@ -12,7 +12,7 @@ class SignDataset(Dataset):
         self.paths = paths
         self.transform = transform # если есть аугментации
 
-        labels = {str(x).split('/')[-2] for x in paths}
+        labels = sorted(set(str(x).split('/')[-2] for x in paths))
         self.one_hot_encoding = {label: i for i, label in enumerate(labels)}
 
     def __len__(self):
