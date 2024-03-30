@@ -4,7 +4,7 @@ arch:
   _target_: srcs.model.model.LinearModel
   num_classes: 25
 loss:
-  _target_: srcs.model.loss.nll_loss
+  _target_: srcs.model.loss.cross_entropy_loss
 optimizer:
   _target_: torch.optim.Adam
   lr: ${learning_rate}

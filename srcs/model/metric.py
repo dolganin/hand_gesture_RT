@@ -6,20 +6,16 @@ from sklearn.metrics import f1_score
 
 
 def accuracy(output, target):
-    pred = torch.argmax(output, dim=1)
-    return accuracy_score(target, pred)
+    return accuracy_score(target, output)
 
 
 def precision(output, target):
-    pred = torch.argmax(output, dim=1)
-    return precision_score(target, pred, average='weighted', zero_division=True)
+    return precision_score(target, output, average='weighted', zero_division=True)
 
 
 def recall(output, target):
-    pred = torch.argmax(output, dim=1)
-    return recall_score(target, pred, average='weighted', zero_division=True)
+    return recall_score(target, output, average='weighted', zero_division=True)
 
 
 def f1(output, target):
-    pred = torch.argmax(output, dim=1)
-    return f1_score(target, pred, average='weighted')
+    return f1_score(target, output, average='weighted')

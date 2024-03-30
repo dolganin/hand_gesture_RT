@@ -1,18 +1,5 @@
-import torch.nn as nn
-import torch.nn.functional as F
+import torchvision.models.mobilenet
 
 
-class LinearModel(nn.Module):
-    def __init__(self, num_classes=10):
-        super().__init__()
-
-        self.fc1 = nn.Linear(784, 1024)
-        self.fc2 = nn.Linear(1024, 512)
-        self.fc3 = nn.Linear(512, num_classes)
-
-    def forward(self, x):
-        x = x.view(-1, 784)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return F.log_softmax(x, dim=1)
+def get_mobilenet_model(num_classes: int = 29):
+    return torchvision.models.mobilenet.mobilenet_v3_small(num_classes=num_classes)

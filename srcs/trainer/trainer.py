@@ -59,7 +59,9 @@ class Trainer(BaseTrainer):
             if batch_idx % self.log_step == 0:
                 self.writer.add_image('train/input', make_grid(data.cpu(), nrow=8, normalize=True))
                 for met in self.metric_ftns:
-                    metric = met(output.cpu(), target.cpu())  # average metric between processes
+                    metric_output = output.argmax(dim=1)
+                    metric_target = target.argmax(dim=1)
+                    metric = met(metric_output.cpu(), metric_target.cpu())  # average metric between processes
                     self.train_metrics.update(met.__name__, metric)
                 self.logger.info(f'Train Epoch: {epoch} {self._progress(batch_idx)} Loss: {loss.item():.6f}')
 
