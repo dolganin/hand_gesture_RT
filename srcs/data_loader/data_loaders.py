@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, Dataset
 
 
 class SignDataset(Dataset):
-    def __init__(self, paths: List[str], transform=None):
+    def __init__(self, paths: List[Path], transform=None):
         self.paths = paths
         self.transform = transform # если есть аугментации
 
@@ -23,6 +23,7 @@ class SignDataset(Dataset):
         label = str(self.paths[idx]).split('/')[-2]
         label_vector = np.zeros((len(self.one_hot_encoding)))
         label_vector[self.one_hot_encoding[label]] = 1.0
+        image = cv2.resize(image, (200, 200))
         image = np.transpose(image, (2, 0, 1))
         return torch.tensor(image).float(), torch.tensor(label_vector)
 
