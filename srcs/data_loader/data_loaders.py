@@ -21,11 +21,10 @@ class SignDataset(Dataset):
     def __getitem__(self, idx):
         image = cv2.imread(str(self.paths[idx]))
         label = str(self.paths[idx]).split('/')[-2]
-        label_vector = np.zeros((len(self.one_hot_encoding)))
-        label_vector[self.one_hot_encoding[label]] = 1.0
         image = cv2.resize(image, (200, 200))
         image = np.transpose(image, (2, 0, 1))
-        return torch.tensor(image).float(), torch.tensor(label_vector)
+
+        return torch.tensor(image).float(), torch.tensor(self.one_hot_encoding[label])
 
 
 def get_sign_dataloader(
