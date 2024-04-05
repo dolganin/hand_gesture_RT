@@ -1,7 +1,8 @@
 import cv2
 
-id = 0
-result = ""
+img_id = 0
+shot = 1
+result = []
 capture = cv2.VideoCapture(0)
 while True:
     image = capture.read()[1]
@@ -9,17 +10,17 @@ while True:
     k = cv2.waitKey(30) & 0xFF
     if k == 27:  # escape
         break
-    if k == 13:  # enter
-        filename = "capture_%i.jpg" % id
+    if not shot % 60:
+        filename = "capture_%i.jpg" % img_id
         cv2.imwrite(filename, image)
-        output = ""
         # output = model(filename)
-        if output == "del" and id > 0:
-            result = result[:id-1]
-        result += output.replace("space", " ").replace("del", "")
-        id += 1
+        if output == "del" and img_id > 0:
+            result.pop(img_id-1)
+        result.append(output.replace("space", " ").replace("del", ""))
+        img_id += 1
+    shot += 1
 capture.release()
 cv2.destroyAllWindows()
 
 with open("output.txt", "w") as file:
-    file.write(result)
+    file.write("".join(list(dict.fromkeys(result))))
