@@ -1,5 +1,7 @@
 import cv2
 
+# model = ...
+
 img_id = 0
 shot = 1
 result = []
