@@ -12,7 +12,7 @@ logger = logging.getLogger('evaluate')
 @hydra.main(version_base=None,config_path='conf', config_name='evaluate')
 def main(config):
     logger.info('Loading checkpoint: {} ...'.format(config.checkpoint))
-    checkpoint = torch.load(config.checkpoint)
+    checkpoint = torch.load(config.checkpoint, map_location=torch.device('cpu'))
 
     loaded_config = OmegaConf.create(checkpoint['config'])
 
@@ -44,6 +44,7 @@ def main(config):
         for i, (data, target) in enumerate(tqdm(data_loader)):
             data, target = data.to(device), target.to(device)
             output = model(data)
+            print(target)
 
             #
             # save sample images, or do something with output here

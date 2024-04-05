@@ -1,5 +1,5 @@
 log_dir: tensorboard/
-checkpoint: ckpt/model_best.pth
+checkpoint: data/efficent.pth
 n_gpu:
 metrics:
   - _target_: srcs.model.metric.accuracy
