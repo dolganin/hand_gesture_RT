@@ -10,7 +10,7 @@ while True:
     k = cv2.waitKey(30) & 0xFF
     if k == 27:  # escape
         break
-    if not shot % 60:
+    if not shot % 30:
         filename = "capture_%i.jpg" % img_id
         cv2.imwrite(filename, image)
         # output = model(filename)
